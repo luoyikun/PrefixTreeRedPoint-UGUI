@@ -4,7 +4,7 @@ using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 /// <summary>
-/// 红点树视图
+/// 红点树视图，继承Unity自身的TreeView
 /// </summary>
 public class ReddotTreeView : TreeView
 {
@@ -18,7 +18,9 @@ public class ReddotTreeView : TreeView
 
         useScrollView = true;
 
+        //节点数量改变时，进行reload
         ReddotMananger.Instance.NodeNumChangeCallback += Reload;
+        //某个节点的数值改变，进行Repaint
         ReddotMananger.Instance.NodeValueChangeCallback += Repaint;
     }
 

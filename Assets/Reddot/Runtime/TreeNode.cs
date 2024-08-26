@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 /// <summary>
-/// 树节点
+/// 树节点。实现子节点的增加，删除；节点值改变监听增加，删除
 /// </summary>
 public class TreeNode
 {
 
     /// <summary>
-    /// 子节点
+    /// 子节点，key为RangeString。只包含直接子节点，不包含孙节点
     /// </summary>
     private Dictionary<RangeString, TreeNode> m_Children;
 
     /// <summary>
-    /// 节点值改变回调
+    /// 节点值改变回调,创建时，回调带入。执行时，可用于刷新UI上显示
     /// </summary>
     private Action<int> m_ChangeCallback;
 
@@ -24,7 +24,7 @@ public class TreeNode
     private string m_FullPath;
 
     /// <summary>
-    /// 节点名
+    /// 节点名，短名字
     /// </summary>
     public string Name
     {
@@ -85,7 +85,7 @@ public class TreeNode
     }
 
     /// <summary>
-    /// 子节点数量
+    /// 子节点数量。会递归调用到子节点的子节点
     /// </summary>
     public int ChildrenCount
     {
@@ -142,7 +142,7 @@ public class TreeNode
     }
 
     /// <summary>
-    /// 改变节点值（使用传入的新值，只能在叶子节点上调用）
+    /// 改变节点值（使用传入的新值，只能在叶子节点上调用）。主动调用，只能叶子节点修改
     /// </summary>
     public void ChangeValue(int newValue)
     {
@@ -155,12 +155,12 @@ public class TreeNode
     }
 
     /// <summary>
-    /// 改变节点值（根据子节点值计算新值，只对非叶子节点有效）
+    /// 改变节点值（根据子节点值计算新值，只对非叶子节点有效）。被动修改，只能由子节点传递上来
     /// </summary>
     public void ChangeValue()
     {
         int sum = 0;
-
+        //计算直接子节点的值
         if (m_Children != null && m_Children.Count != 0)
         {
             foreach (KeyValuePair<RangeString, TreeNode> child in m_Children)
@@ -215,6 +215,7 @@ public class TreeNode
         }
 
         TreeNode child = new TreeNode(key.ToString(), this);
+        Debug.Log($"TreeNode增加child：cur:{FullPath},child:{child.FullPath}");
         m_Children.Add(key, child);
         ReddotMananger.Instance.NodeNumChangeCallback?.Invoke();
         return child;

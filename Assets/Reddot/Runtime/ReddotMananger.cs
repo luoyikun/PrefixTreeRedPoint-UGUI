@@ -160,16 +160,19 @@ public class ReddotMananger
             throw new Exception("路径不合法，不能为空");
         }
 
+        //在保存所有节点的字典中寻找
         if (m_AllNodes.TryGetValue(path,out TreeNode node))
         {
+            Debug.Log($"找到{path}的TreeNode");
             return node;
         }
 
+        //未找到创建节点
         TreeNode cur = Root;
         int length = path.Length;
 
         int startIndex = 0;
-
+        //避免使用split找父节点，其中会有内存分配，例如new string[]
         for (int i = 0; i < length; i++)
         {
             if (path[i] == SplitChar)
@@ -184,7 +187,7 @@ public class ReddotMananger
                 {
                     throw new Exception("路径不合法，不能存在连续的路径分隔符或以路径分隔符开头：" + path);
                 }
-
+                //会依次创建orGet按照 / 分割的0-N
                 TreeNode child = cur.GetOrAddChild(new RangeString(path,startIndex,endIndex));
 
                 //更新startIndex
@@ -196,7 +199,7 @@ public class ReddotMananger
 
         //最后一个节点 直接用length - 1作为endIndex
         TreeNode target = cur.GetOrAddChild(new RangeString(path, startIndex, length - 1));
-
+        //Debug.Log($"cur：{cur.FullPath}创建{path}节点");
         m_AllNodes.Add(path, target);
 
         return target;

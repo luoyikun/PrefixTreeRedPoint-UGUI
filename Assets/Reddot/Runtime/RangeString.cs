@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 范围字符串
@@ -46,6 +47,7 @@ public struct RangeString : IEquatable<RangeString>
         m_Length = endIndex - startIndex + 1;
         m_IsSourceNullOrEmpty = string.IsNullOrEmpty(source);
         m_HashCode = 0;
+        Debug.Log($"RangeString,source:{source},start:{startIndex},end:{endIndex}");
     }
 
     public bool Equals(RangeString other)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 
 /// <summary>
-/// 红点树视图条目
+/// 红点树视图条目，继承Unity自身的TreeViewItem
 /// </summary>
 public class ReddotTreeViewItem : TreeViewItem
 {
@@ -37,6 +37,7 @@ public class ReddotTreeViewItem : TreeViewItem
         Value = node.Value;
     }
 
+    //重写displayName属性，可以在树形图中显示该字符串
     public override string displayName
     {
         get
